@@ -12,13 +12,10 @@ const ProductDetail = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get(`https://dummyjson.com/products/category/groceries${id}`)
+        axios.get(`https://fakestoreapi.com/products/${id}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error('Error fetching product:', error));
     }, [id]);
-
-    // https://dummyjson.com/products/category/groceries
-
 
     const handleAddToCart = () => {
         dispatch(addToCart(product));
@@ -41,7 +38,9 @@ const ProductDetail = () => {
                 <img src={product.image} alt={product.title} className="product-detail-image" />
                 <div className="product-info">
                     <h1>{product.title}</h1>
-                    <p className="product-price">Price: ${product.price}</p>
+                    <p className="product-description">Category : {product.category}</p>
+                    <p className="product-price">Price: <strong>${product.price}</strong></p>
+                    <p className="product-description">⭐ Rating: {product.rating?.rate} / 5 ({product.rating?.count} reviews)</p>
                     <p className="product-description">{product.description}</p>
                     <button onClick={handleAddToCart} className="add-to-cart-button">
                         Add to Cart

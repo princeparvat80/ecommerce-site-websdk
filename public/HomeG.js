@@ -10,7 +10,7 @@ const HomeG = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        fetch('https://dummyjson.com/products/category/groceries')
+        fetch('https://dummyjson.com/products/')
             .then(response => response.json())
             .then(data => setProducts(data.products)) // "products" is the key in API response
             .catch(error => console.error('Error fetching data:', error));
