@@ -9,7 +9,7 @@ import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Login from "./pages/Login";
 
 const App = () => {
     return (
@@ -20,6 +20,7 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/cart" element={<Cart />} />  {/* Add Cart Route */}
+                <Route path="/login" element={<Login />} />
                 <Route path="/checkout" element={<Checkout />} />  
                 <Route path="/confirmation" element={<OrderConfirmation />} />  {/* New Confirmation Page */}
             </Routes>

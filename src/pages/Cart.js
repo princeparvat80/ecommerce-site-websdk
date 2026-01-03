@@ -2,10 +2,22 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart, increaseQuantity, decreaseQuantity } from '../redux/cartSlice';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 const Cart = () => {
     const cartItems = useSelector(state => state.cart.cartItems);
     const dispatch = useDispatch();
+const navigate = useNavigate();
+const { auth } = useAuth();
+
+const handleCheckout = () => {
+  if (!auth.isAuthenticated) {
+    navigate("/login", { state: { from: "/checkout" } });
+    return;
+  }
+  navigate("/checkout");
+};
 
     return (
         <div className="cart-container">
@@ -34,7 +46,7 @@ const Cart = () => {
                     
                     {/* Checkout Button - Only shows if there are items in the cart */}
                     <div className="checkout-section">
-                        <Link to="/checkout" className="checkout-button">Go to Checkout</Link>
+                        <Link to="/checkout" className="checkout-button" onClick={handleCheckout}>Go to Checkout</Link>
                     </div>
                 </>
             )}
