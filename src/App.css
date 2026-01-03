@@ -7,7 +7,7 @@
 
 
 .hero {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 150px);
   background: linear-gradient(
     135deg,
     #0B1C2D 0%,
@@ -144,6 +144,8 @@
   text-align: center;
   padding: 20px;
 }
+
+
 /* 🔑 FORCE ALL NAV ITEMS TO ALIGN PROPERLY */
 .nav-links {
   display: flex;
