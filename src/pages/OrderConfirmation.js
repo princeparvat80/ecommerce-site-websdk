@@ -42,7 +42,7 @@ const OrderConfirmation = () => {
 
             {/* Navigation Buttons */}
             <div className="confirmation-actions">
-                <Link to="/" className="home-button">Go to Home Page</Link>
+                <Link to="/" className="product-button">Go to Product Page</Link>
             </div>
         </div>
     );

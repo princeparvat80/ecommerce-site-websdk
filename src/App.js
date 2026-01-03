@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Product from './pages/Product';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Navbar from './components/Navbar'; // Import Navbar
@@ -18,6 +19,7 @@ const App = () => {
             <ToastContainer />
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Product />} />
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/cart" element={<Cart />} />  {/* Add Cart Route */}
                 <Route path="/login" element={<Login />} />

@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../redux/cartSlice';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const HomeG = () => {
+const Product = () => {
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        fetch('https://dummyjson.com/products/')
-            .then(response => response.json())
-            .then(data => setProducts(data.products)) // "products" is the key in API response
+        axios.get('https://fakestoreapi.com/products')
+            .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
@@ -20,21 +20,22 @@ const HomeG = () => {
         dispatch(addToCart(product));
         toast.success("🛒 Product added to cart!", {
             position: "top-right",
-            autoClose: 2000,
+            autoClose: 2000, // Closes after 2 seconds
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: false,
             draggable: true,
+            progress: undefined,
         });
     };
 
     return (
         <div className="product-container">
-            <h1>Grocery Products</h1>
+            <h1>Our Products</h1>
             <div className="products-grid">
                 {products.map(product => (
                     <div key={product.id} className="product-card">
-                        <img src={product.thumbnail} alt={product.title} className="product-image" />
+                        <img src={product.image} alt={product.title} className="product-image" />
                         <h3>{product.title}</h3>
                         <p className="price">Price: ${product.price}</p>
                         <div className="product-buttons">
@@ -52,4 +53,4 @@ const HomeG = () => {
     );
 };
 
-export default HomeG;
+export default Product;

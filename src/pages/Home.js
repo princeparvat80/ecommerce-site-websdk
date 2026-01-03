@@ -1,56 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../redux/cartSlice';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-    const [products, setProducts] = useState([]);
-    const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        axios.get('https://fakestoreapi.com/products')
-            .then(response => setProducts(response.data))
-            .catch(error => console.error('Error fetching data:', error));
-    }, []);
+  return (
+    <div className="home-container">
+      <div className="home-hero">
+        <h1>Welcome to Prince Store</h1>
 
-    const handleAddToCart = (product) => {
-        dispatch(addToCart(product));
-        toast.success("🛒 Product added to cart!", {
-            position: "top-right",
-            autoClose: 2000, // Closes after 2 seconds
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-        });
-    };
+        <p className="home-subtitle">
+          Your one-stop destination for thoughtfully curated products — built
+          to demonstrate a modern, data-driven eCommerce experience.
+        </p>
 
-    return (
-        <div className="home-container">
-            <h1>Our Products</h1>
-            <div className="products-grid">
-                {products.map(product => (
-                    <div key={product.id} className="product-card">
-                        <img src={product.image} alt={product.title} className="product-image" />
-                        <h3>{product.title}</h3>
-                        <p className="price">Price: ${product.price}</p>
-                        <div className="product-buttons">
-                            <button onClick={() => handleAddToCart(product)} className="add-to-cart-button">
-                                Add to Cart
-                            </button>
-                            <Link to={`/product/${product.id}`} className="details-button">
-                                View Details
-                            </Link>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+        <p className="home-description">
+          Prince Store is a sample eCommerce application designed to showcase
+          real-world customer journeys — from browsing and cart management to
+          checkout and post-purchase experiences.
+          <br /><br />
+          This platform also serves as a practical foundation for learning and
+          demonstrating Adobe Experience Platform, Customer Journey Analytics,
+          and Adobe Journey Optimizer in action.
+        </p>
+
+        <button
+          className="home-button"
+          onClick={() => navigate("/products")}
+        >
+          Explore All Products
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default Home;

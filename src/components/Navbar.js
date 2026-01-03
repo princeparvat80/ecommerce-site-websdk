@@ -32,9 +32,9 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </li>
 
-        {/* <li>
+        <li>
           <Link to="/products">Products</Link>
-        </li> */}
+        </li>
 
         <li>
           {/* IMPORTANT: position-relative wrapper */}
