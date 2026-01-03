@@ -1,3 +1,144 @@
+/* ===== BAD-ASS HOME PAGE ===== */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+.hero {
+  height: calc(100vh - 70px);
+  background: linear-gradient(
+    135deg,
+    #0B1C2D 0%,
+    #102A44 60%,
+    #0E2238 100%
+  );
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero h1 {
+  font-size: 56px;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #D6E4FF;
+  max-width: 720px;
+}
+.primary-cta {
+  background: linear-gradient(135deg, #4F8CFF, #3A6FFF);
+  color: #FFFFFF;
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(79, 140, 255, 0.35);
+  transition: all 0.25s ease;
+}
+
+.primary-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(79, 140, 255, 0.45);
+}
+.value-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  padding: 24px;
+  border-radius: 14px;
+  transition: all 0.25s ease;
+}
+
+.value-card h3 {
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.value-card p {
+  font-size: 14px;
+  color: #D6E4FF;
+  line-height: 1.6;
+}
+
+.value-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: float 10s infinite alternate;
+}
+
+.hero::before {
+  top: 10%;
+  left: 10%;
+}
+
+.hero::after {
+  bottom: 15%;
+  right: 15%;
+}
+
+@keyframes float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-40px); }
+}
+
+
+.hero-content {
+  max-width: 900px;
+}
+
+.hero h1 {
+  font-size: 56px;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+
+.hero-actions {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+
+.secondary-text {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Value Props */
+
+.value-props {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+}
+
 /* Product Page Styles */
 .product-container {
   text-align: center;
