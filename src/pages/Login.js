@@ -41,7 +41,7 @@ const Login = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h2>Login</h2>
+      <h2>Login with your Email</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -52,7 +52,7 @@ const Login = () => {
           style={{ padding: "8px", width: "250px" }}
         />
         <br /><br />
-        <button type="submit">Login</button>
+        <button type="submit" className="add-to-cart-button">Login</button>
       </form>
 
       {error && (
