@@ -84,3 +84,20 @@ export const initDataLayer = () => {
     }
   };
 };
+
+export const updateProductDataLayer = (product) => {
+  if (!window.dataLayer) return;
+
+  window.dataLayer.product = {
+    id: String(product.id),
+    name: product.name,
+    category: product.category,
+    price: product.price,
+    currency: product.currency,
+    rating : product.rating,
+    description : product.description
+  };
+
+  // Optional but very useful for debugging
+  console.log("dataLayer.product updated:", window.dataLayer.product);
+};

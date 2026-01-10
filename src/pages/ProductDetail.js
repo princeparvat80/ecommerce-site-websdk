@@ -5,6 +5,7 @@ import { addToCart } from '../redux/cartSlice';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { updateProductDataLayer } from "../tracking/initDataLayer ";
 
 const ProductDetail = () => {
     // const { id } = useParams();
@@ -13,11 +14,31 @@ const ProductDetail = () => {
     const { slug } = useParams();
     const productId = slug.split("-")[0];
 
-    useEffect(() => {
-        axios.get(`https://fakestoreapi.com/products/${productId}`)
-            .then(response => setProduct(response.data))
-            .catch(error => console.error('Error fetching product:', error));
-    }, [slug]);
+useEffect(() => {
+  if (!productId) return;
+
+  axios
+    .get(`https://fakestoreapi.com/products/${productId}`)
+    .then((response) => {
+      const data = response.data; // ✅ DEFINE data ONCE
+
+      setProduct(data);
+
+      updateProductDataLayer({
+        id: data.id,
+        name: data.title,
+        category: data.category,
+        price: data.price,
+        currency: "USD",
+        rating: data.rating?.rate,
+        description: data.description
+      });
+    })
+    .catch((error) =>
+      console.error("Error fetching product:", error)
+    );
+}, [productId]);
+
 
     const handleAddToCart = () => {
         dispatch(addToCart(product));
