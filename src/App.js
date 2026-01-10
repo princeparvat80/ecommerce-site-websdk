@@ -11,12 +11,14 @@ import OrderConfirmation from './pages/OrderConfirmation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from "./pages/Login";
+import PageTracker from "./tracking/PageTracker";
 
 const App = () => {
     return (
         <Router>
             <Navbar /> {/* Add Navbar here */}
             <ToastContainer />
+            <PageTracker />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Product />} />

@@ -45,7 +45,7 @@ const ProductDetail = () => {
                     <button onClick={handleAddToCart} className="add-to-cart-button">
                         Add to Cart
                     </button>
-                    <Link to="/" className="back-button">Back to Product</Link>
+                    <Link to="/products" className="back-button">Back to Product</Link>
                 </div>
             </div>
         </div>
