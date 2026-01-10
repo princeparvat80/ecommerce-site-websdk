@@ -7,15 +7,17 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetail = () => {
-    const { id } = useParams();
+    // const { id } = useParams();
     const [product, setProduct] = useState(null);
     const dispatch = useDispatch();
+    const { slug } = useParams();
+    const productId = slug.split("-")[0];
 
     useEffect(() => {
-        axios.get(`https://fakestoreapi.com/products/${id}`)
+        axios.get(`https://fakestoreapi.com/products/${productId}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error('Error fetching product:', error));
-    }, [id]);
+    }, [slug]);
 
     const handleAddToCart = () => {
         dispatch(addToCart(product));

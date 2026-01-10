@@ -5,6 +5,7 @@ import { addToCart } from '../redux/cartSlice';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { slugify } from "../utils/slugify";
 
 const Product = () => {
     const [products, setProducts] = useState([]);
@@ -42,7 +43,7 @@ const Product = () => {
                             <button onClick={() => handleAddToCart(product)} className="add-to-cart-button">
                                 Add to Cart
                             </button>
-                            <Link to={`/product/${product.id}`} className="details-button">
+                            <Link to={`/product/${slugify(product.id, product.title)}`} className="details-button">
                                 View Details
                             </Link>
                         </div>
