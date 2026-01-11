@@ -23,7 +23,7 @@ const Navbar = () => {
     <nav className="navbar">
       {/* LOGO */}
       <div className="logo">
-        <Link to="/">Prince Store</Link>
+        <Link to="/">Prince AEP Lab</Link>
       </div>
 
       {/* NAV ITEMS */}

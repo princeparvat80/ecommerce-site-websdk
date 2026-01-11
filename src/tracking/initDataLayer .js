@@ -133,3 +133,59 @@ export const pushAddToCartEvent = ({ product, cart }) => {
 
   console.log("add_to_cart event fired:", window.dataLayer);
 };
+
+export const pushRemoveFromCartEvent = ({ product, cart }) => {
+  if (!window.dataLayer) return;
+
+  window.dataLayer.product = {
+    id: String(product.id),
+    name: product.title,
+    category: product.category,
+    price: product.price,
+    currency: "USD"
+  };
+
+  window.dataLayer.cart = {
+    items: cart.items.map(item => ({
+      id: String(item.id),
+      name: item.title,
+      price: item.price,
+      quantity: item.quantity
+    })),
+    totalQuantity: cart.totalQuantity,
+    totalValue: cart.totalAmount,
+    currency: "USD"
+  };
+
+  window.dataLayer.event = {
+    name: "remove_from_cart",
+    category: "commerce",
+    timestamp: Date.now()
+  };
+
+  console.log(" remove_from_cart event fired:", window.dataLayer);
+};
+
+export const pushViewCartEvent = (cart) => {
+  if (!window.dataLayer) return;
+
+  window.dataLayer.cart = {
+    items: cart.cartItems.map(item => ({
+      id: String(item.id),
+      name: item.title,
+      price: item.price,
+      quantity: item.quantity
+    })),
+    totalQuantity: cart.totalQuantity,
+    totalValue: cart.totalAmount,
+    currency: "USD"
+  };
+
+  window.dataLayer.event = {
+    name: "view_cart",
+    category: "commerce",
+    timestamp: Date.now()
+  };
+
+  console.log(" view_cart event fired:", window.dataLayer);
+};
