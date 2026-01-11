@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../redux/cartSlice";
 import { useAuth } from "../auth/AuthContext";
+import { pushBeginCheckoutEvent } from "../tracking/initDataLayer ";
 
 const Checkout = () => {
   const { auth } = useAuth();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const cart = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -16,6 +18,13 @@ const Checkout = () => {
       navigate("/login", { state: { from: "/checkout" } });
     }
   }, [auth, navigate]);
+
+   // BEGIN CHECKOUT (fire ONCE after auth)
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      pushBeginCheckoutEvent(cart);
+    }
+  }, [auth.isAuthenticated]);
 
   // Calculate total safely
   const totalAmount = cartItems.reduce(

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, increaseQuantity, decreaseQuantity } from "../redux/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { pushCheckoutClickEvent } from "../tracking/initDataLayer ";
 
 // 🔹 DATA LAYER IMPORTS (NEW)
 import {
@@ -28,6 +29,7 @@ const Cart = () => {
   }, []); // intentional: fire once on cart page load
 
   const handleCheckout = () => {
+    pushCheckoutClickEvent();
     if (!auth.isAuthenticated) {
       navigate("/login", { state: { from: "/checkout" } });
       return;
@@ -136,6 +138,7 @@ const Cart = () => {
               to="/checkout"
               className="checkout-button"
               onClick={handleCheckout}
+
             >
               Go to Checkout
             </Link>

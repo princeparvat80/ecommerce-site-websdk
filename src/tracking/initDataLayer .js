@@ -274,4 +274,62 @@ export const pushViewCartEvent = (cart) => {
   console.log("view_cart event fired:", window.dataLayer);
 };
 
+export const pushBeginCheckoutEvent = (cart) => {
+  if (!window.dataLayer || !cart?.cartItems) return;
 
+  const normalizedItemsMap = {};
+
+  cart.cartItems.forEach(item => {
+    const id = String(item.id);
+
+    if (!normalizedItemsMap[id]) {
+      normalizedItemsMap[id] = {
+        id,
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity
+      };
+    } else {
+      normalizedItemsMap[id].quantity += item.quantity;
+    }
+  });
+
+  const normalizedItems = Object.values(normalizedItemsMap);
+
+  const totalQuantity = normalizedItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+  const totalValue = normalizedItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  window.dataLayer.cart = {
+    items: normalizedItems,
+    totalQuantity,
+    totalValue,
+    currency: "USD"
+  };
+
+  window.dataLayer.event = {
+    name: "begin_checkout",
+    category: "commerce",
+    timestamp: Date.now()
+  };
+
+  console.log("begin_checkout event fired:", window.dataLayer);
+};
+
+export const pushCheckoutClickEvent = () => {
+  if (!window.dataLayer) return;
+
+  window.dataLayer.event = {
+    name: "checkout_click",
+    category: "interaction",
+    timestamp: Date.now()
+  };
+
+  console.log("checkout_click event fired:", window.dataLayer);
+};
