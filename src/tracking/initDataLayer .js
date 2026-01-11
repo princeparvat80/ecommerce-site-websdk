@@ -101,3 +101,35 @@ export const updateProductDataLayer = (product) => {
   // Optional but very useful for debugging
   console.log("dataLayer.product updated:", window.dataLayer.product);
 };
+
+export const pushAddToCartEvent = ({ product, cart }) => {
+  if (!window.dataLayer) return;
+
+  window.dataLayer.product = {
+    id: String(product.id),
+    name: product.title,
+    category: product.category,
+    price: product.price,
+    currency: "USD"
+  };
+
+  window.dataLayer.cart = {
+    items: cart.items.map(item => ({
+      id: String(item.id),
+      name: item.title,
+      price: item.price,
+      quantity: item.quantity
+    })),
+    totalQuantity: cart.totalQuantity,
+    totalValue: cart.totalAmount,
+    currency: "USD"
+  };
+
+  window.dataLayer.event = {
+    name: "add_to_cart",
+    category: "commerce",
+    timestamp: Date.now()
+  };
+
+  console.log("add_to_cart event fired:", window.dataLayer);
+};

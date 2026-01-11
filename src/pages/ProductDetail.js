@@ -6,6 +6,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { updateProductDataLayer } from "../tracking/initDataLayer ";
+import { useSelector } from "react-redux";
+import { pushAddToCartEvent } from "../tracking/initDataLayer ";
 
 const ProductDetail = () => {
     // const { id } = useParams();
@@ -13,6 +15,7 @@ const ProductDetail = () => {
     const dispatch = useDispatch();
     const { slug } = useParams();
     const productId = slug.split("-")[0];
+    const cart = useSelector(state => state.cart);
 
 useEffect(() => {
   if (!productId) return;
@@ -42,6 +45,15 @@ useEffect(() => {
 
     const handleAddToCart = () => {
         dispatch(addToCart(product));
+
+        pushAddToCartEvent({
+          product,
+          cart: {
+            items: [...cart.cartItems, { ...product, quantity: 1 }],
+            totalQuantity: cart.totalQuantity + 1,
+            totalAmount: cart.totalAmount + product.price,
+          },
+        });
         toast.success("🛒 Product added to cart!", {
             position: "top-right",
             autoClose: 2000, // Closes after 2 seconds

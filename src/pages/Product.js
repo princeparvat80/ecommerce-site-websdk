@@ -6,10 +6,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { slugify } from "../utils/slugify";
+import { pushAddToCartEvent } from "../tracking/initDataLayer ";
+import { useSelector } from "react-redux";
 
 const Product = () => {
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart);
 
     useEffect(() => {
         axios.get('https://fakestoreapi.com/products')
@@ -18,16 +21,25 @@ const Product = () => {
     }, []);
 
     const handleAddToCart = (product) => {
-        dispatch(addToCart(product));
-        toast.success("🛒 Product added to cart!", {
-            position: "top-right",
-            autoClose: 2000, // Closes after 2 seconds
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-        });
+      dispatch(addToCart(product));
+      pushAddToCartEvent({
+        product,
+        cart: {
+          items: [...cart.cartItems, { ...product, quantity: 1 }],
+          totalQuantity: cart.totalQuantity + 1,
+          totalAmount: cart.totalAmount + product.price,
+        },
+      });
+
+      toast.success("🛒 Product added to cart!", {
+        position: "top-right",
+        autoClose: 2000, // Closes after 2 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
     };
 
     return (
