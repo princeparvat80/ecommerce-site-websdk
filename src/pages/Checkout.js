@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { clearCart } from "../redux/cartSlice";
 import { useAuth } from "../auth/AuthContext";
 import { pushBeginCheckoutEvent } from "../tracking/initDataLayer ";
+import { pushPurchaseEvent } from "../tracking/initDataLayer ";
 
 const Checkout = () => {
   const { auth } = useAuth();
@@ -33,14 +34,24 @@ const Checkout = () => {
   );
 
   const handlePayment = () => {
-    alert("Thank you for shopping with us!");
+  const orderId = `ORDER-${Date.now()}`;
 
-    //  Purchase completed → clear cart
-    dispatch(clearCart());
+  // 1. FIRE PURCHASE (before cart is cleared)
+  pushPurchaseEvent({
+    cart,
+    orderId
+  });
 
-    //  Redirect to confirmation / feedback page
-    navigate("/confirmation"); // or "/feedback"
-  };
+  // 2. Show success message
+  alert("Thank you for shopping with us!");
+
+  // 3. Clear cart
+  dispatch(clearCart());
+
+  // 4. Redirect
+  navigate("/confirmation"); // or "/feedback"
+};
+
 
   if (!auth.isAuthenticated) {
     // Prevent UI flicker while redirecting

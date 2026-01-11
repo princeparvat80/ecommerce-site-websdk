@@ -333,3 +333,58 @@ export const pushCheckoutClickEvent = () => {
 
   console.log("checkout_click event fired:", window.dataLayer);
 };
+
+export const pushPurchaseEvent = ({ cart, orderId }) => {
+  if (!window.dataLayer || !cart?.cartItems) return;
+
+  // 🔒 Normalize cart items (same logic everywhere)
+  const normalizedItemsMap = {};
+
+  cart.cartItems.forEach(item => {
+    const id = String(item.id);
+
+    if (!normalizedItemsMap[id]) {
+      normalizedItemsMap[id] = {
+        id,
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity
+      };
+    } else {
+      normalizedItemsMap[id].quantity += item.quantity;
+    }
+  });
+
+  const items = Object.values(normalizedItemsMap);
+
+  const totalQuantity = items.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+  const totalValue = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  window.dataLayer.cart = {
+    items,
+    totalQuantity,
+    totalValue,
+    currency: "USD"
+  };
+
+  window.dataLayer.transaction = {
+    orderId,
+    revenue: totalValue,
+    currency: "USD"
+  };
+
+  window.dataLayer.event = {
+    name: "purchase",
+    category: "commerce",
+    timestamp: Date.now()
+  };
+
+  console.log("purchase event fired:", window.dataLayer);
+};
