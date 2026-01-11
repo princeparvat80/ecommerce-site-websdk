@@ -226,17 +226,42 @@ export const pushRemoveFromCartEvent = ({ product, cart }) => {
 };
 
 export const pushViewCartEvent = (cart) => {
-  if (!window.dataLayer) return;
+  if (!window.dataLayer || !cart?.cartItems) return;
+
+  // 🔒 Normalize cart items (MANDATORY)
+  const normalizedItemsMap = {};
+
+  cart.cartItems.forEach(item => {
+    const id = String(item.id);
+
+    if (!normalizedItemsMap[id]) {
+      normalizedItemsMap[id] = {
+        id,
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity
+      };
+    } else {
+      normalizedItemsMap[id].quantity += item.quantity;
+    }
+  });
+
+  const normalizedItems = Object.values(normalizedItemsMap);
+
+  const totalQuantity = normalizedItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+  const totalValue = normalizedItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   window.dataLayer.cart = {
-    items: cart.cartItems.map(item => ({
-      id: String(item.id),
-      name: item.title,
-      price: item.price,
-      quantity: item.quantity
-    })),
-    totalQuantity: cart.totalQuantity,
-    totalValue: cart.totalAmount,
+    items: normalizedItems,
+    totalQuantity,
+    totalValue,
     currency: "USD"
   };
 
@@ -246,5 +271,7 @@ export const pushViewCartEvent = (cart) => {
     timestamp: Date.now()
   };
 
-  console.log(" view_cart event fired:", window.dataLayer);
+  console.log("view_cart event fired:", window.dataLayer);
 };
+
+
