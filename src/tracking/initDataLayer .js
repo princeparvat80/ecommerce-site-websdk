@@ -102,9 +102,72 @@ export const updateProductDataLayer = (product) => {
   console.log("dataLayer.product updated:", window.dataLayer.product);
 };
 
-export const pushAddToCartEvent = ({ product, cart }) => {
-  if (!window.dataLayer) return;
+// export const pushAddToCartEvent = ({ product, cart }) => {
+//   if (!window.dataLayer) return;
 
+//   window.dataLayer.product = {
+//     id: String(product.id),
+//     name: product.title,
+//     category: product.category,
+//     price: product.price,
+//     currency: "USD"
+//   };
+
+//   window.dataLayer.cart = {
+//     items: cart.items.map(item => ({
+//       id: String(item.id),
+//       name: item.title,
+//       price: item.price,
+//       quantity: item.quantity
+//     })),
+//     totalQuantity: cart.totalQuantity,
+//     totalValue: cart.totalAmount,
+//     currency: "USD"
+//   };
+
+//   window.dataLayer.event = {
+//     name: "add_to_cart",
+//     category: "commerce",
+//     timestamp: Date.now()
+//   };
+
+//   console.log("add_to_cart event fired:", window.dataLayer);
+// };
+
+export const pushAddToCartEvent = ({ product, cart }) => {
+  if (!window.dataLayer || !cart?.items) return;
+
+  // Normalize cart items by product ID (CRITICAL FIX)
+  const normalizedItemsMap = {};
+
+  cart.items.forEach(item => {
+    const id = String(item.id);
+
+    if (!normalizedItemsMap[id]) {
+      normalizedItemsMap[id] = {
+        id,
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity
+      };
+    } else {
+      normalizedItemsMap[id].quantity += item.quantity;
+    }
+  });
+
+  const normalizedItems = Object.values(normalizedItemsMap);
+
+  const totalQuantity = normalizedItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+  const totalValue = normalizedItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  // Product context (what was just added)
   window.dataLayer.product = {
     id: String(product.id),
     name: product.title,
@@ -113,15 +176,11 @@ export const pushAddToCartEvent = ({ product, cart }) => {
     currency: "USD"
   };
 
+  // Cart snapshot (source of truth)
   window.dataLayer.cart = {
-    items: cart.items.map(item => ({
-      id: String(item.id),
-      name: item.title,
-      price: item.price,
-      quantity: item.quantity
-    })),
-    totalQuantity: cart.totalQuantity,
-    totalValue: cart.totalAmount,
+    items: normalizedItems,
+    totalQuantity,
+    totalValue,
     currency: "USD"
   };
 
